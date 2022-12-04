@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {GhlService} from '../../service/ghl.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {LoginRequestModel} from '../../models/login-request.model';
+import {LoginRequestModel} from '../../models/login-flow/login-request.model';
 import {LoaderComponent} from '../loader/loader.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
 

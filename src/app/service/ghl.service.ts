@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {LoginRequestModel} from '../models/login-request.model';
-import {OauthAuthorizationModel} from '../models/oauth-authorization.model';
-import {OauthTokenModel} from '../models/oauth-token.model';
+import {LoginRequestModel} from '../models/login-flow/login-request.model';
+import {OauthAuthorizationModel} from '../models/login-flow/oauth-authorization.model';
+import {OauthTokenModel} from '../models/login-flow/oauth-token.model';
 
 @Injectable({
   providedIn: 'root'
