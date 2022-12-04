@@ -1,0 +1,39 @@
+.buttr-app-card {
+  min-width: 400px;
+  min-height: 100px;
+  max-width: 400px;
+  max-height: 100px;
+}
+
+
+.mat-card-header{
+  background-color: #673AB7FF;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-style: solid;
+  border-width: thin;
+  padding:5px !important;
+  text-transform: uppercase !important;
+  color: #F7F9FE;
+}
+
+.mat-card{
+  padding: 0 !important;
+  margin-bottom: 5px;
+  border-radius: 10px;
+}
+
+.mat-card-content{
+  padding: 25px 20px !important;
+  font-size: 14px;
+  min-height: 550px;
+}
+
+.mat-card-actions {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 0px 0px 10px 10px;
+  height: 50px;
+}

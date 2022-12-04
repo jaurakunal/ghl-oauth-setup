@@ -1,0 +1,92 @@
+@import "../../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+.buttr-header {
+  background: #fffaf0;
+}
+
+.buttr-section {
+  padding: 10px;
+  background-color: #F7F9FE;
+}
+
+.buttr-full-width-input {
+  width: 100%;
+  background-color: white;
+}
+
+.buttr_progress_spinner {
+  margin-right: 50%;
+  margin-left: 50%;
+}
+
+.buttr-api-key-field {
+  width: 400px;
+  font: 400 16px/20px "Assistant", sans-serif;
+  letter-spacing: normal;
+  align-self: end;
+}
+
+.buttr-logo {
+  height: 50px;
+}
+
+.buttr-toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.buttr-expansion-panel {
+  margin: 5px 0px 5px 0px !important;
+}
+
+ul .material-icons-outlined {
+  font-size: 14px;
+}
+
+.buttr-form {
+  background-color: #F7F9FE;
+  width: 100%;
+  text-align: left;
+  padding: 20px;
+}
+
+.buttr-form-field {
+  padding: 10px;
+}
+
+.mat-step-label-selected {
+  font-size: 18px !important;
+  font-weight: bold;
+}
+
+.buttr-radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+  align-items: flex-start;
+}
+
+.buttr-radio-button {
+  margin: 5px;
+}
+
+.buttr-outline-options {
+  padding: 20px;;
+}
+
+.buttr-app-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+}
+
+.buttr-app-item {
+  display: block;
+  padding: 10px;
+
+}
+
+.buttr-app-list-card-search {
+  padding: 20px;
+  min-width: 400px;
+  width: 400px;
+}

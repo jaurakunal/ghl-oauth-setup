@@ -1,0 +1,26 @@
+<div>
+  <mat-toolbar class="buttr-header">
+    <a href="https://m.me/thebotgal" target="_blank">
+      <img src="assets/buttr_logo.png" class="buttr-logo">
+    </a>
+    <h2 style="padding-left: 15px;">The ButtrTools' GHL Marketplace Helper</h2>
+  </mat-toolbar>
+
+  <section class="buttr-section">
+
+    <div class="buttr-search-bar">
+      <mat-form-field class="buttr-app-list-card-search" appearance="outline">
+        <mat-label>Search for Apps</mat-label>
+        <input matInput type="text" [(ngModel)]="query">
+        <mat-icon matPrefix class="material-icons">search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="buttr-app-list-container">
+      <div *ngFor="let app of ghlApps | search: 'companyName,name,description':query" class="buttr-app-item">
+        <app-ghl-app [ghlApp]="app" (selected)="showAppDetail($event)">
+        </app-ghl-app>
+      </div>
+    </div>
+  </section>
+</div>

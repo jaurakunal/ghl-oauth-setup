@@ -1,0 +1,10 @@
+<mat-card class="buttr-app-card" (click)="appSelected()">
+  <mat-card-header class="mat-card-header">
+    <mat-card-title>{{ghlApp.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mat-card-content">
+    <p *ngIf="ghlApp.companyName !== undefined">
+      By {{ghlApp.companyName}}
+    </p>
+  </mat-card-content>
+</mat-card>
