@@ -7,7 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "sass"
+          "style": "css"
         },
         "@schematics/angular:application": {
           "strict": true
@@ -25,13 +25,14 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "sass",
+            "inlineStyleLanguage": "css",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -99,7 +100,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.scss"
             ],
             "scripts": []
           }

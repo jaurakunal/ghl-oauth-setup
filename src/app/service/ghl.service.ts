@@ -31,7 +31,10 @@ export class GhlService {
       email: loginRequest.email,
       password: loginRequest.password
     };
-    return this.http.post<any>(this.loginUrl, payload);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(this.loginUrl, payload, {headers: headers});
   }
 
   public requestOtp(otpRequest: LoginRequestModel) {
@@ -40,7 +43,10 @@ export class GhlService {
       password: otpRequest.password,
       otpChannel: otpRequest.otpChannel
     };
-    return this.http.post<any>(this.loginUrl, payload);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(this.loginUrl, payload, {headers: headers});
   }
 
   public validateOtp(otpRequest: LoginRequestModel) {
@@ -49,9 +55,13 @@ export class GhlService {
       password: otpRequest.password,
       otpChannel: otpRequest.otpChannel,
       otp: otpRequest.otp,
-      token: otpRequest.token
+      token: otpRequest.token,
+      version: otpRequest.version
     }
-    return this.http.post<any>(this.loginUrl, payload);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post<any>(this.loginUrl, payload, {headers: headers});
   }
 
   public getAllMarketplaceApps() {

@@ -1,0 +1,76 @@
+<div>
+  <mat-toolbar class="buttr-header">
+    <a href="https://m.me/thebotgal" target="_blank">
+      <img src="assets/buttr_logo.png" class="buttr-logo">
+    </a>
+    <h2 style="padding-left: 15px;">The ButtrTools' GHL Marketplace Helper</h2>
+  </mat-toolbar>
+
+  <section class="buttr-section">
+
+    <!-- Login with email+password-->
+    <div class="buttr-form" *ngIf="showLoginSection">
+      <form [formGroup]="loginFormGroup">
+
+        <div class="buttr-form-field">
+          <mat-form-field appearance="outline" class="buttr-full-width-input">
+            <mat-label>Email</mat-label>
+            <input type="email"
+                   matInput
+                   formControlName="email">
+          </mat-form-field>
+        </div>
+
+        <div class="buttr-form-field">
+          <mat-form-field appearance="outline" class="buttr-full-width-input">
+            <mat-label>Password</mat-label>
+            <input type="password"
+                   matInput
+                   formControlName="password">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <button mat-raised-button color="primary" (click)="loginRequest()">Login</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Request OTP-->
+    <div class="buttr-form" *ngIf="showOtpOptions">
+      <form [formGroup]="otpOptionsFormGroup">
+
+        <div class="buttr-form-field">
+          <mat-label>Where would you like to get an OTP to complete Logging in?</mat-label>
+          <mat-radio-group formControlName="otpChannel">
+            <mat-radio-button value="email">Email</mat-radio-button>
+            <mat-radio-button value="phone">Phone</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div>
+          <button mat-raised-button color="primary" (click)="getOtp()">Get OTP</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Validate OTP-->
+    <div class="buttr-form" *ngIf="showOtpInput">
+      <form [formGroup]="otpFormGroup">
+
+        <div class="buttr-form-field">
+          <mat-form-field appearance="outline" class="buttr-full-width-input">
+            <mat-label>OTP</mat-label>
+            <input type="text"
+                   matInput
+                   formControlName="otp">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <button mat-raised-button color="primary" (click)="validateOtp()">Validate OTP</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
