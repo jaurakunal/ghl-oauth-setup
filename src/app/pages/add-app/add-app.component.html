@@ -8,5 +8,27 @@
 
   <section class="buttr-section">
 
+    <div>
+
+      <button mat-raised-button color="primary" (click)="initAddApp(false)">Add to Selected Locations</button>
+      <button mat-raised-button color="primary" (click)="initAddApp(true)">Add to All Locations</button>
+    </div>
+    <div>
+      <div class="buttr-search-bar">
+        <mat-form-field class="buttr-app-list-card-search" appearance="outline">
+          <mat-label>Search for Apps</mat-label>
+          <input matInput type="text" [(ngModel)]="query">
+          <mat-icon matPrefix class="material-icons">search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <mat-selection-list #locList [(ngModel)]="selectedLocations">
+        <mat-list-option *ngFor="let location of allLocations | search: 'address,name':query"
+                          [value]="location">
+          <h2 matListItemTitle>{{location.name}}</h2>
+          <p matListItemLine>{{location.address}}</p>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
   </section>
 </div>

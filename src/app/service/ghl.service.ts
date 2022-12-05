@@ -104,13 +104,14 @@ export class GhlService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });
-    const payload = new HttpParams();
-    payload.set("client_id", authCodeRequest.client_id)
+    const payload = new HttpParams()
+      .set("client_id", authCodeRequest.client_id)
       .set("location_id", authCodeRequest.location_id)
       .set("response_type", "code")
       .set("redirect_url", authCodeRequest.redirect_url)
       .set("scope", authCodeRequest.scope);
-    return this.http.post<any>(url, payload.toString(), {headers: headers});
+    console.log(payload);
+    return this.http.post<any>(url, payload, {headers: headers});
   }
 
   public executeOAuth(oAuthRequest: OauthTokenModel) {
