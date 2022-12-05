@@ -149,6 +149,10 @@ export class LoginComponent implements OnInit {
       console.log(result);
       this.saveAccessCredentials(result);
       this.loginCompleted.emit(result);
+
+      if (this.loginType.type === "GHLApp") {
+        this.dialogRef.close()
+      }
     }, (error) => {
       this.toggleLoaderDisplay(false, "");
       console.log(error);

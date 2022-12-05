@@ -150,10 +150,20 @@ export class GhlMarketplaceComponent implements OnInit {
       this.loginDialog = this.dialog.open(LoginComponent, {
         width: '600px',
         height: '500px',
-        disableClose: true
+        disableClose: true,
+        data: {
+          type: "GHLApp"
+        }
       });
+      this.loginDialog.afterAllClosed().subscribe(() => {
+        this.showLocations();
+      })
     } else {
-
+        this.showLocations();
     }
+  }
+
+  private showLocations() {
+
   }
 }

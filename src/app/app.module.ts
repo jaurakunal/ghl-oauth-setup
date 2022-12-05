@@ -24,6 +24,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {SearchPipe} from './pages/ghl-marketplace/search.pipe';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { LocationsComponent } from './components/locations/locations.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     GhlAppComponent,
     GhlMarketplaceComponent,
     GhlAppDetailComponent,
-    SearchPipe
+    SearchPipe,
+    LocationsComponent
   ],
   imports: [
     BrowserModule,
