@@ -5,6 +5,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {LoaderComponent} from '../../components/loader/loader.component';
 import {LoginComponent} from '../../components/login/login.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-ghl-marketplace',
@@ -21,7 +22,8 @@ export class GhlMarketplaceComponent implements OnInit {
   selectedApp: GhlAppModel;
   loginDialog: any;
 
-  constructor(private ghl: GhlService, private snackBar: MatSnackBar, private dialog: MatDialog) {
+  constructor(private ghl: GhlService, private snackBar: MatSnackBar, private dialog: MatDialog,
+              private router: Router) {
     this.ghlApps = new Array<GhlAppModel>();
     this.showSplitView = false;
     this.showDashboardView = true;
@@ -41,7 +43,7 @@ export class GhlMarketplaceComponent implements OnInit {
   ngOnInit(): void {
     this.showSplitView = false;
     this.showDashboardView = true;
-    this.loadAllMarketplaceApps();
+    this.loadMyApps();
   }
 
   loadAllMarketplaceApps() {
@@ -63,14 +65,22 @@ export class GhlMarketplaceComponent implements OnInit {
   }
 
   loadMyApps() {
-    this.ghlApps = new Array<GhlAppModel>();
     this.toggleLoaderDisplay(true, "Loading your apps!");
+    this.ghlApps = new Array<GhlAppModel>();
     const ghlMarketplaceCreds: any = localStorage.getItem("ghl_marketplace_credentials");
+
+    if (ghlMarketplaceCreds === null) {
+      this.toggleLoaderDisplay(false, "");
+      this.router.navigateByUrl("/login");
+      return;
+    }
+
     const token: string = JSON.parse(ghlMarketplaceCreds).jwt;
     this.ghl.getMyApps(token).subscribe((result) => {
       this.toggleLoaderDisplay(false, '');
       console.log(result);
       for (const app of result["apps"]) {
+
         this.ghlApps.push(this.getGhlAppFrom(app));
       }
     }, (error) => {
