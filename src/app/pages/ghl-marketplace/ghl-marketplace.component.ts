@@ -175,7 +175,7 @@ export class GhlMarketplaceComponent implements OnInit {
     }
   }
 
-  initAddAppFlow($event: GhlAppModel) {
+  initAddAppFlow(app: GhlAppModel) {
     const credentials = localStorage.getItem("ghl_app_credentials");
     console.log("credentials" + credentials);
     if (credentials === null) {
@@ -188,14 +188,14 @@ export class GhlMarketplaceComponent implements OnInit {
         }
       });
       this.loginDialog.afterAllClosed().subscribe(() => {
-        this.showLocations();
+        this.navigateToAddApp(app.id);
       })
     } else {
-        this.showLocations();
+        this.navigateToAddApp(app.id);
     }
   }
 
-  private showLocations() {
-
+  private navigateToAddApp(appId: string) {
+    this.router.navigateByUrl("/add-app/" + appId);
   }
 }
