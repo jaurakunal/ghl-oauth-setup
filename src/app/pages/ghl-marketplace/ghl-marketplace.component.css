@@ -8,6 +8,10 @@
   z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
 }
 
+.buttr-toolbar-spacer {
+  flex: 1 1 auto;
+}
+
 .buttr-section {
   padding: 10px;
   background-color: #F7F9FE;

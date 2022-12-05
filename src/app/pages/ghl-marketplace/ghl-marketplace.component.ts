@@ -44,12 +44,33 @@ export class GhlMarketplaceComponent implements OnInit {
     this.loadAllMarketplaceApps();
   }
 
-  private loadAllMarketplaceApps() {
+  loadAllMarketplaceApps() {
+    this.ghlApps = new Array<GhlAppModel>();
     this.toggleLoaderDisplay(true, "Loading all apps!");
     this.ghl.getAllMarketplaceApps().subscribe((result) => {
       this.toggleLoaderDisplay(false, '');
       console.log(result);
       for (const app of result["integrations"]) {
+        this.ghlApps.push(this.getGhlAppFrom(app));
+      }
+    }, (error) => {
+      this.toggleLoaderDisplay(false, '');
+      console.log(error);
+      this.snackBar.open("We ran into an issue getting all apps. Please tray again!",  "Ok!", {
+        duration: 5000
+      });
+    });
+  }
+
+  loadMyApps() {
+    this.ghlApps = new Array<GhlAppModel>();
+    this.toggleLoaderDisplay(true, "Loading your apps!");
+    const ghlMarketplaceCreds: any = localStorage.getItem("ghl_marketplace_credentials");
+    const token: string = JSON.parse(ghlMarketplaceCreds).jwt;
+    this.ghl.getMyApps(token).subscribe((result) => {
+      this.toggleLoaderDisplay(false, '');
+      console.log(result);
+      for (const app of result["apps"]) {
         this.ghlApps.push(this.getGhlAppFrom(app));
       }
     }, (error) => {

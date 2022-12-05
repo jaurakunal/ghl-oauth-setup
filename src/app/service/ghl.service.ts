@@ -125,8 +125,9 @@ export class GhlService {
     return this.http.post<any>(url, payload.toString(), {headers: headers});
   }
 
-  public getMyApps() {
+  public getMyApps(token: string) {
     const headers = new HttpHeaders({
+      "Authorization": "Bearer " + token,
       "Version": "2021-04-15",
       "source": "DEVELOPER_WEB_USER",
       "channel": "APP"
@@ -134,9 +135,10 @@ export class GhlService {
     return this.http.get<any>(this.marketplaceMyAppsUrl, {headers: headers});
   }
 
-  public getMyAppDetail(id: string) {
+  public getMyAppDetail(token: string, id: string) {
     const url: string = this.marketplaceMyAppsUrl + "/" + id;
     const headers = new HttpHeaders({
+      "Authorization": "Bearer " + token,
       "Version": "2021-04-15",
       "source": "DEVELOPER_WEB_USER",
       "channel": "APP"
