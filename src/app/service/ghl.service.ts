@@ -95,7 +95,8 @@ export class GhlService {
       'Authorization': 'Bearer ' + apiKey,
       'Content-Type': 'application/json'
     });
-    return this.http.get<any>(this.locationsUrl, {headers: headers});
+    const url: string = this.marketplaceAppsBaseUrl + this.locationsUrl;
+    return this.http.get<any>(url, {headers: headers});
   }
 
   public getOAuthAuthorizationCode(authCodeRequest: OauthAuthorizationModel) {

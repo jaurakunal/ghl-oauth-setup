@@ -187,7 +187,7 @@ export class GhlMarketplaceComponent implements OnInit {
           type: "GHLApp"
         }
       });
-      this.loginDialog.afterAllClosed().subscribe(() => {
+      this.loginDialog.afterClosed().subscribe(() => {
         this.navigateToAddApp(app.id);
       })
     } else {
