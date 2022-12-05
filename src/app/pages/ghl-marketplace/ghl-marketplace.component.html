@@ -8,7 +8,7 @@
 
   <section class="buttr-section">
 
-    <div class="buttr-search-bar">
+    <div class="buttr-search-bar" *ngIf="showDashboardView">
       <mat-form-field class="buttr-app-list-card-search" appearance="outline">
         <mat-label>Search for Apps</mat-label>
         <input matInput type="text" [(ngModel)]="query">
@@ -16,10 +16,37 @@
       </mat-form-field>
     </div>
 
-    <div class="buttr-app-list-container">
+    <div class="buttr-app-list-container" *ngIf="showDashboardView">
       <div *ngFor="let app of ghlApps | search: 'companyName,name,description':query" class="buttr-app-item">
-        <app-ghl-app [ghlApp]="app" (selected)="showAppDetail($event)">
+        <app-ghl-app [ghlApp]="app" (selected)="updateSelectedApp($event)">
         </app-ghl-app>
+      </div>
+    </div>
+
+    <div class="buttr-split-view" *ngIf="showSplitView">
+
+      <div class="buttr-app-list-view">
+        <div class="buttr-search-bar">
+          <mat-form-field class="buttr-app-list-card-search" appearance="outline">
+            <mat-label>Search for Apps</mat-label>
+            <input matInput type="text" [(ngModel)]="query">
+            <mat-icon matPrefix class="material-icons">search</mat-icon>
+          </mat-form-field>
+        </div>
+        <mat-selection-list #appList [multiple]="false">
+          <mat-list-option *ngFor="let app of ghlApps | search: 'companyName,name,description':query"
+                           [value]="app" [lines]="2" (click)="showAppDetail(app.id)">
+            <h3 matListItemTitle>{{app.name}}</h3>
+            <p matListItemLine>By {{app.companyName}}</p>
+            <mat-divider matListItemLine></mat-divider>
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+
+      <div class="buttr-app-detail-view">
+        <app-ghl-app-detail [ghlApp]="selectedApp">
+
+        </app-ghl-app-detail>
       </div>
     </div>
   </section>

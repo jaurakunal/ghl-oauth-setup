@@ -1,0 +1,58 @@
+@import "../../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+.buttr-app-card {
+  width: 60vw;
+}
+
+.mat-card-header{
+  background-color: #FFD740FF;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-style: solid;
+  border-width: thin;
+  padding:5px !important;
+  text-transform: uppercase !important;
+}
+
+.mat-card{
+  padding: 0 !important;
+  margin-bottom: 5px;
+  border-radius: 10px;
+}
+
+.mat-card-content{
+  padding: 25px 20px !important;
+  font-size: 14px;
+  min-height: 550px;
+}
+
+.mat-card-actions {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 0px 0px 10px 10px;
+  height: 50px;
+}
+
+.buttr-app-desc {
+  width: 100%;
+  display: flex;
+  padding: 5px;
+  flex-wrap: wrap;
+}
+
+.buttr-grid-tile-content {
+  align-items: start !important;
+  text-align: left;
+  vertical-align: top;
+}
+.mat-grid-tile {
+  align-items: start !important;
+  text-align: left;
+  vertical-align: top;
+}
+
+.buttr-app-scopes {
+  text-wrap: normal;
+}

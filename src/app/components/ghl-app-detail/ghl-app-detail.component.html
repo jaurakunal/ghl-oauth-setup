@@ -1,0 +1,56 @@
+<div class="buttr-app-card">
+  <mat-card>
+    <mat-card-header class="mat-card-header">
+      <mat-card-title>{{ghlApp.name}}</mat-card-title>
+      <mat-card-subtitle *ngIf="ghlApp.companyName !== undefined">By {{ghlApp.companyName}}</mat-card-subtitle>
+      <mat-card-subtitle *ngIf="ghlApp.tagline !== undefined">{{ghlApp.tagline}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="mat-card-content">
+      <mat-grid-list cols="4">
+        <mat-grid-tile colspan="3" class="buttr-grid-tile-content">
+          <div class="buttr-app-desc">
+            <div>
+              <h2>Description</h2>
+            </div>
+            <div [innerHTML]="ghlApp.description">
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="1"  class="mat-grid-tile">
+          <div class="buttr-app-desc">
+            <div style="width: 100%;">
+              <h2>Website</h2>
+            </div>
+            <div>
+              <a href="{{ghlApp.website}}" target="_blank">{{ghlApp.website}}</a>
+            </div>
+          </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="4"  class="mat-grid-tile">
+          <div class="buttr-app-desc">
+            <div style="width: 100%;">
+              <h2>Scopes</h2>
+            </div>
+            <div>
+              <p>
+                This app requires access to the following scopes:
+              </p>
+              <p class="buttr-app-scopes">
+                {{ghlApp.allowedScopes.toString().replaceAll(",", " ")}}
+              </p>
+              <p>
+                Please see <a href="https://highlevel.stoplight.io/docs/integrations/6444956c5219f-scopes" target="_blank">here</a> for more details on what that may mean for your data
+              </p>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="initAddAppFlow()">Add App</button>
+    </mat-card-actions>
+  </mat-card>
+
+</div>

@@ -15,12 +15,30 @@ export class GhlMarketplaceComponent implements OnInit {
   ghlApps: Array<GhlAppModel>;
   loader: any;
   query: string = '';
+  showDashboardView: boolean;
+  showSplitView: boolean;
+  selectedApp: GhlAppModel;
 
   constructor(private ghl: GhlService, private snackBar: MatSnackBar, private dialog: MatDialog) {
     this.ghlApps = new Array<GhlAppModel>();
+    this.showSplitView = false;
+    this.showDashboardView = true;
+    this.selectedApp = {
+      id: '',
+      name: '',
+      createdAt: '',
+      companyName: '',
+      description: '',
+      tagline: '',
+      website: '',
+      clientKeys: [],
+      allowedScopes:  []
+    };
   }
 
   ngOnInit(): void {
+    this.showSplitView = false;
+    this.showDashboardView = true;
     this.loadAllMarketplaceApps();
   }
 
@@ -47,22 +65,34 @@ export class GhlMarketplaceComponent implements OnInit {
       name: app.name,
       createdAt: app.created,
       companyName: app.companyName,
-      description: '',
-      tagline: '',
-      website: '',
-      clientKeys: [
-        {
-          id: ''
-        }
-      ],
-      allowedScopes: []
+      description: app.description !== undefined ? app.description : '',
+      tagline: app.tagline !== undefined ? app.tagline : '',
+      website: app.website !== undefined ? app.website : '',
+      clientKeys: app.clientKeys !== undefined ? app.clientKeys : [{id: ''}],
+      allowedScopes: app.allowedScopes !== undefined ? app.allowedScopes : []
     };
   }
 
-  showAppDetail($event: string) {
-
+  updateSelectedApp(event: string) {
+    this.showAppDetail(event);
   }
 
+  showAppDetail(id: string) {
+    this.toggleLoaderDisplay(true, "Getting app details!");
+    this.ghl.getAppDetailsFor(id).subscribe((result) => {
+      this.toggleLoaderDisplay(false, '');
+      console.log(result);
+      this.selectedApp = this.getGhlAppFrom(result["integration"]);
+      this.showSplitView = true;
+      this.showDashboardView = false;
+    }, (error) => {
+      this.toggleLoaderDisplay(false, '');
+      console.log(error);
+      this.snackBar.open("We ran into an issue getting app info. Please try again!",  "Ok!", {
+        duration: 5000
+      });
+    });
+  }
 
   private toggleLoaderDisplay(show: boolean, message: string) {
     if (show) {

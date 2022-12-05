@@ -22,6 +22,8 @@ import { GhlAppDetailComponent } from './components/ghl-app-detail/ghl-app-detai
 import {MatCardModule} from '@angular/material/card';
 import {MatIconModule} from '@angular/material/icon';
 import {SearchPipe} from './pages/ghl-marketplace/search.pipe';
+import {MatListModule} from '@angular/material/list';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import {SearchPipe} from './pages/ghl-marketplace/search.pipe';
     MatRadioModule,
     MatCardModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    MatListModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

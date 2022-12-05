@@ -70,7 +70,7 @@ export class GhlService {
   }
 
   public getAppDetailsFor(appId: string) {
-    const url: string = this.marketplaceBaseUrl + this.allAppsUrl + "/" + appId;
+    const url: string = this.marketplaceBaseUrl + "/" + appId;
     return this.http.get<any>(url);
   }
 

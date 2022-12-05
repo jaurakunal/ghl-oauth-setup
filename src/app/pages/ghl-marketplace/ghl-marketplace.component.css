@@ -2,6 +2,10 @@
 
 .buttr-header {
   background: #fffaf0;
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
 }
 
 .buttr-section {
@@ -89,4 +93,26 @@ ul .material-icons-outlined {
   padding: 20px;
   min-width: 400px;
   width: 400px;
+}
+
+.buttr-split-view {
+  width: 100%;
+  display: flex;
+  padding: 5px;
+  max-height: 95vw;
+}
+
+.buttr-app-list-view {
+  width: 30%;
+  display: block;
+}
+
+.buttr-app-detail-view {
+  display: block;
+  padding: 10px;
+}
+
+mat-selection-list {
+  max-height: 35vw;
+  overflow: auto;
 }
