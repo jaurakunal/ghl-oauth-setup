@@ -44,7 +44,7 @@
       </div>
 
       <div class="buttr-app-detail-view">
-        <app-ghl-app-detail [ghlApp]="selectedApp">
+        <app-ghl-app-detail [ghlApp]="selectedApp" (addAppSelected)="initAddAppFlow($event)">
 
         </app-ghl-app-detail>
       </div>

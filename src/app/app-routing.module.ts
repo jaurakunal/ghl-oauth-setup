@@ -6,7 +6,7 @@ import {GhlMarketplaceComponent} from './pages/ghl-marketplace/ghl-marketplace.c
 const routes: Routes = [
   {
     path: '',
-    component: GhlMarketplaceComponent
+    component: LoginComponent
   },
   {
     path: 'marketplace',

@@ -1,10 +1,15 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {GhlService} from '../../service/ghl.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {LoginRequestModel} from '../../models/login-flow/login-request.model';
-import {LoaderComponent} from '../loader/loader.component';
+import {DialogData, LoaderComponent} from '../loader/loader.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
+
+export interface LoginType {
+  type: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -26,7 +31,8 @@ export class LoginComponent implements OnInit {
   loginCompleted = new EventEmitter<any>();
 
   constructor(private ghl: GhlService, private formBuilder: FormBuilder, private dialog: MatDialog,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar, public dialogRef: MatDialogRef<LoginComponent>,
+              @Inject(MAT_DIALOG_DATA) public loginType: LoginType, private router: Router) {
     this.loginFormGroup = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -59,10 +65,19 @@ export class LoginComponent implements OnInit {
   }
 
   loginRequest() {
-    this.toggleLoaderDisplay(true, "Logging in!")
     this.loginReq.email = this.loginFormGroup.value.email;
     this.loginReq.password = this.loginFormGroup.value.password;
-    this.ghl.login(this.loginReq).subscribe((result) => {
+
+    if (this.loginType.type === 'GHLApp') {
+      this.callGhlAppLoginFlow();
+    } else {
+      this.callGhlMarketplaceLoginFlow();
+    }
+  }
+
+  private callGhlAppLoginFlow() {
+    this.toggleLoaderDisplay(true, "Logging into GHL App!")
+    this.ghl.login(this.loginReq, true).subscribe((result) => {
       this.toggleLoaderDisplay(false, '');
       console.log(result);
       this.showLoginSection = false;
@@ -73,12 +88,29 @@ export class LoginComponent implements OnInit {
       this.snackBar.open("Please check your email/ password and try again!",  "Ok!", {
         duration: 5000
       });
-    })
+    });
+  }
+
+  private callGhlMarketplaceLoginFlow() {
+    this.toggleLoaderDisplay(true, "Logging into GHL Marketplace!")
+    this.ghl.login(this.loginReq, false).subscribe((result) => {
+      this.toggleLoaderDisplay(false, '');
+      console.log(result);
+      localStorage.setItem("ghl_marketplace_credentials", JSON.stringify(result));
+      this.router.navigateByUrl("/marketplace");
+    }, (error) => {
+      this.toggleLoaderDisplay(false, '');
+      console.log(error);
+      this.snackBar.open("Please check your email/ password and try again!",  "Ok!", {
+        duration: 5000
+      });
+    });
   }
 
   private toggleLoaderDisplay(show: boolean, message: string) {
     if (show) {
       this.loader = this.dialog.open(LoaderComponent, {
+        id: "login-api-loader",
         width: '250px',
         height: '250px',
         disableClose: true,
@@ -87,7 +119,7 @@ export class LoginComponent implements OnInit {
         }
       });
     } else {
-      this.dialog.closeAll();
+      this.dialog.getDialogById("login-api-loader")?.close();
     }
   }
 

@@ -8,33 +8,49 @@ import {OauthTokenModel} from '../models/login-flow/oauth-token.model';
   providedIn: 'root'
 })
 export class GhlService {
-  loginUrl: string;
-  marketplaceBaseUrl: string;
+  ghlAppLoginUrl: string;
+  marketplaceAppsBaseUrl: string;
   allAppsUrl: string;
   locationsUrl: string;
   oAuthBaseUrl: string;
   authCodeUrl: string;
   authTokenUrl: string;
+  marketplaceLoginUrl: string;
+  marketplaceMyAppsUrl: string;
 
   constructor(private http: HttpClient) {
-    this.loginUrl = "https://services.leadconnectorhq.com/oauth/2/login/email";
-    this.marketplaceBaseUrl = " https://services.msgsndr.com/integrations/public";
+    this.ghlAppLoginUrl = "https://services.leadconnectorhq.com/oauth/2/login/email";
+    this.marketplaceAppsBaseUrl = " https://services.msgsndr.com/integrations/public";
     this.allAppsUrl = "/all";
     this.locationsUrl = "/locations?limit=100"
     this.oAuthBaseUrl = "https://services.msgsndr.com/oauth";
     this.authCodeUrl = "/authorize";
     this.authTokenUrl = "/token";
+    this.marketplaceLoginUrl = "https://services.msgsndr.com/oauth/developers/login/email";
+    this.marketplaceMyAppsUrl = "https://services.msgsndr.com/oauth/clients";
   }
 
-  public login(loginRequest: LoginRequestModel) {
+  public login(loginRequest: LoginRequestModel, ghlApp: boolean) {
     const payload = {
       email: loginRequest.email,
       password: loginRequest.password
     };
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-    return this.http.post<any>(this.loginUrl, payload, {headers: headers});
+    let headers;
+    const url = ghlApp ? this.ghlAppLoginUrl : this.marketplaceLoginUrl;
+
+    if (!ghlApp) {
+      headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        "Version": "2021-04-15",
+        "source": "DEVELOPER_WEB_USER",
+        "Channel": "APP"
+      });
+    } else {
+      headers = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+    }
+    return this.http.post<any>(url, payload, {headers: headers});
   }
 
   public requestOtp(otpRequest: LoginRequestModel) {
@@ -46,7 +62,7 @@ export class GhlService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<any>(this.loginUrl, payload, {headers: headers});
+    return this.http.post<any>(this.ghlAppLoginUrl, payload, {headers: headers});
   }
 
   public validateOtp(otpRequest: LoginRequestModel) {
@@ -61,16 +77,16 @@ export class GhlService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    return this.http.post<any>(this.loginUrl, payload, {headers: headers});
+    return this.http.post<any>(this.ghlAppLoginUrl, payload, {headers: headers});
   }
 
   public getAllMarketplaceApps() {
-    const url: string = this.marketplaceBaseUrl + this.allAppsUrl;
+    const url: string = this.marketplaceAppsBaseUrl + this.allAppsUrl;
     return this.http.get<any>(url);
   }
 
   public getAppDetailsFor(appId: string) {
-    const url: string = this.marketplaceBaseUrl + "/" + appId;
+    const url: string = this.marketplaceAppsBaseUrl + "/" + appId;
     return this.http.get<any>(url);
   }
 
@@ -107,5 +123,24 @@ export class GhlService {
       .set("grant_type", "authorization_code")
       .set("code", oAuthRequest.code)
     return this.http.post<any>(url, payload.toString(), {headers: headers});
+  }
+
+  public getMyApps() {
+    const headers = new HttpHeaders({
+      "Version": "2021-04-15",
+      "source": "DEVELOPER_WEB_USER",
+      "channel": "APP"
+    });
+    return this.http.get<any>(this.marketplaceMyAppsUrl, {headers: headers});
+  }
+
+  public getMyAppDetail(id: string) {
+    const url: string = this.marketplaceMyAppsUrl + "/" + id;
+    const headers = new HttpHeaders({
+      "Version": "2021-04-15",
+      "source": "DEVELOPER_WEB_USER",
+      "channel": "APP"
+    });
+    return this.http.get<any>(url, {headers: headers});
   }
 }

@@ -4,6 +4,7 @@ import {GhlService} from '../../service/ghl.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {LoaderComponent} from '../../components/loader/loader.component';
+import {LoginComponent} from '../../components/login/login.component';
 
 @Component({
   selector: 'app-ghl-marketplace',
@@ -18,6 +19,7 @@ export class GhlMarketplaceComponent implements OnInit {
   showDashboardView: boolean;
   showSplitView: boolean;
   selectedApp: GhlAppModel;
+  loginDialog: any;
 
   constructor(private ghl: GhlService, private snackBar: MatSnackBar, private dialog: MatDialog) {
     this.ghlApps = new Array<GhlAppModel>();
@@ -97,6 +99,7 @@ export class GhlMarketplaceComponent implements OnInit {
   private toggleLoaderDisplay(show: boolean, message: string) {
     if (show) {
       this.loader = this.dialog.open(LoaderComponent, {
+        id: 'marketplace-api-loader',
         width: '250px',
         height: '250px',
         disableClose: true,
@@ -105,8 +108,21 @@ export class GhlMarketplaceComponent implements OnInit {
         }
       });
     } else {
-      this.dialog.closeAll();
+      this.dialog.getDialogById('marketplace-api-loader')?.close();
     }
   }
 
+  initAddAppFlow($event: GhlAppModel) {
+    const credentials = localStorage.getItem("ghl_app_credentials");
+    console.log("credentials" + credentials);
+    if (credentials === null) {
+      this.loginDialog = this.dialog.open(LoginComponent, {
+        width: '600px',
+        height: '500px',
+        disableClose: true
+      });
+    } else {
+
+    }
+  }
 }

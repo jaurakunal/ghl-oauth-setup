@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {GhlAppModel} from '../../models/ghl-app/ghl-app.model';
 import {GhlService} from '../../service/ghl.service';
 import {Dialog} from '@angular/cdk/dialog';
@@ -10,6 +10,7 @@ import {Dialog} from '@angular/cdk/dialog';
 })
 export class GhlAppDetailComponent implements OnChanges {
   @Input() ghlApp: GhlAppModel;
+  @Output() addAppSelected: EventEmitter<GhlAppModel>;
 
   constructor(private ghl: GhlService, private dialog: Dialog) {
     this.ghlApp = {
@@ -27,6 +28,7 @@ export class GhlAppDetailComponent implements OnChanges {
       ],
       allowedScopes: []
     };
+    this.addAppSelected = new EventEmitter<GhlAppModel>();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -52,6 +54,6 @@ export class GhlAppDetailComponent implements OnChanges {
   }
 
   initAddAppFlow() {
-
+    this.addAppSelected.emit(this.ghlApp);
   }
 }
