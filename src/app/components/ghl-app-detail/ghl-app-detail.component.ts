@@ -23,10 +23,14 @@ export class GhlAppDetailComponent implements OnChanges {
       website: '',
       clientKeys: [
         {
-          id: ''
+          id: '',
+          name: '',
+          createdAt: ''
         }
       ],
-      allowedScopes: []
+      allowedScopes: [],
+      redirectUris: [],
+      webhookUrl: ''
     };
     this.addAppSelected = new EventEmitter<GhlAppModel>();
   }
@@ -43,10 +47,14 @@ export class GhlAppDetailComponent implements OnChanges {
         website: '',
         clientKeys: [
           {
-            id: ''
+            id: '',
+            name: '',
+            createdAt: ''
           }
         ],
-        allowedScopes: []
+        allowedScopes: [],
+        redirectUris: [],
+        webhookUrl: ''
       };
     }
 

@@ -21,10 +21,14 @@ export class GhlAppComponent implements OnChanges {
       website: '',
       clientKeys: [
         {
-          id: ''
+          id: '',
+          name: '',
+          createdAt: ''
         }
       ],
-      allowedScopes: []
+      allowedScopes: [],
+      redirectUris: [],
+      webhookUrl: ''
     };
   }
 
@@ -40,10 +44,14 @@ export class GhlAppComponent implements OnChanges {
         website: '',
         clientKeys: [
           {
-            id: ''
+            id: '',
+            name: '',
+            createdAt: ''
           }
         ],
-        allowedScopes: []
+        allowedScopes: [],
+        redirectUris: [],
+        webhookUrl: ''
       };
     }
 

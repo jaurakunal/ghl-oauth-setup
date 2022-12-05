@@ -21,6 +21,8 @@ export class GhlMarketplaceComponent implements OnInit {
   showSplitView: boolean;
   selectedApp: GhlAppModel;
   loginDialog: any;
+  appType: string;
+  marketplaceToken: string = '';
 
   constructor(private ghl: GhlService, private snackBar: MatSnackBar, private dialog: MatDialog,
               private router: Router) {
@@ -35,9 +37,18 @@ export class GhlMarketplaceComponent implements OnInit {
       description: '',
       tagline: '',
       website: '',
-      clientKeys: [],
-      allowedScopes:  []
+      clientKeys: [
+        {
+          id: '',
+          name: '',
+          createdAt: ''
+        }
+      ],
+      allowedScopes: [],
+      redirectUris: [],
+      webhookUrl: ''
     };
+    this.appType = "myapps";
   }
 
   ngOnInit(): void {
@@ -47,6 +58,7 @@ export class GhlMarketplaceComponent implements OnInit {
   }
 
   loadAllMarketplaceApps() {
+    this.appType = "marketplace";
     this.ghlApps = new Array<GhlAppModel>();
     this.toggleLoaderDisplay(true, "Loading all apps!");
     this.ghl.getAllMarketplaceApps().subscribe((result) => {
@@ -65,6 +77,7 @@ export class GhlMarketplaceComponent implements OnInit {
   }
 
   loadMyApps() {
+    this.appType = "myapps";
     this.toggleLoaderDisplay(true, "Loading your apps!");
     this.ghlApps = new Array<GhlAppModel>();
     const ghlMarketplaceCreds: any = localStorage.getItem("ghl_marketplace_credentials");
@@ -75,8 +88,8 @@ export class GhlMarketplaceComponent implements OnInit {
       return;
     }
 
-    const token: string = JSON.parse(ghlMarketplaceCreds).jwt;
-    this.ghl.getMyApps(token).subscribe((result) => {
+    this.marketplaceToken = JSON.parse(ghlMarketplaceCreds).jwt;
+    this.ghl.getMyApps(this.marketplaceToken).subscribe((result) => {
       this.toggleLoaderDisplay(false, '');
       console.log(result);
       for (const app of result["apps"]) {
@@ -101,8 +114,10 @@ export class GhlMarketplaceComponent implements OnInit {
       description: app.description !== undefined ? app.description : '',
       tagline: app.tagline !== undefined ? app.tagline : '',
       website: app.website !== undefined ? app.website : '',
-      clientKeys: app.clientKeys !== undefined ? app.clientKeys : [{id: ''}],
-      allowedScopes: app.allowedScopes !== undefined ? app.allowedScopes : []
+      clientKeys: app.clientKeys !== undefined ? app.clientKeys : [{id: '', name: '', createdAt: ''}],
+      allowedScopes: app.allowedScopes !== undefined ? app.allowedScopes : [],
+      redirectUris: app.redirectUris !== undefined ? app.redirectUris : [],
+      webhookUrl: app.webhookUrl !== undefined ? app.webhookUrl : ''
     };
   }
 
@@ -112,19 +127,36 @@ export class GhlMarketplaceComponent implements OnInit {
 
   showAppDetail(id: string) {
     this.toggleLoaderDisplay(true, "Getting app details!");
-    this.ghl.getAppDetailsFor(id).subscribe((result) => {
-      this.toggleLoaderDisplay(false, '');
-      console.log(result);
-      this.selectedApp = this.getGhlAppFrom(result["integration"]);
-      this.showSplitView = true;
-      this.showDashboardView = false;
-    }, (error) => {
-      this.toggleLoaderDisplay(false, '');
-      console.log(error);
-      this.snackBar.open("We ran into an issue getting app info. Please try again!",  "Ok!", {
-        duration: 5000
+
+    if (this.appType === "marketplace") {
+      this.ghl.getAppDetailsFor(id).subscribe((result) => {
+        this.toggleLoaderDisplay(false, '');
+        console.log(result);
+        this.selectedApp = this.getGhlAppFrom(result["integration"]);
+        this.showSplitView = true;
+        this.showDashboardView = false;
+      }, (error) => {
+        this.toggleLoaderDisplay(false, '');
+        console.log(error);
+        this.snackBar.open("We ran into an issue getting app info. Please try again!",  "Ok!", {
+          duration: 5000
+        });
       });
-    });
+    } else {
+      this.ghl.getMyAppDetail(this.marketplaceToken, id).subscribe((result) => {
+        this.toggleLoaderDisplay(false, '');
+        console.log(result);
+        this.selectedApp = this.getGhlAppFrom(result["app"]);
+        this.showSplitView = true;
+        this.showDashboardView = false;
+      }, (error) => {
+        this.toggleLoaderDisplay(false, '');
+        console.log(error);
+        this.snackBar.open("We ran into an issue getting app info. Please try again!",  "Ok!", {
+          duration: 5000
+        });
+      });
+    }
   }
 
   private toggleLoaderDisplay(show: boolean, message: string) {

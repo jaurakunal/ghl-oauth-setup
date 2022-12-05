@@ -8,8 +8,12 @@ export interface GhlAppModel {
   website: string;
   clientKeys: Array<ClientKeys>;
   allowedScopes: Array<string>;
+  redirectUris: Array<string>;
+  webhookUrl: string;
 }
 
 interface ClientKeys {
   id: string;
+  name: string;
+  createdAt: string;
 }
