@@ -8,7 +8,6 @@
 
 .buttr-full-width-input {
   width: 100%;
-  background-color: white;
 }
 
 .buttr_progress_spinner {
@@ -41,13 +40,12 @@ ul .material-icons-outlined {
 
 .buttr-form {
   background-color: #F7F9FE;
-  width: 100%;
   text-align: left;
   padding: 20px;
 }
 
 .buttr-form-field {
-  padding: 10px;
+  padding: 5px;
 }
 
 .mat-step-label-selected {

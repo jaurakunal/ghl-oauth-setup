@@ -87,7 +87,7 @@ export class AddAppComponent implements OnInit {
 
     if (ghlAppCreds === null) {
       const loginDialog: any = this.dialog.open(LoginComponent, {
-        width: '600px',
+        width: '700px',
         height: '500px',
         disableClose: true,
         data: {
@@ -165,19 +165,29 @@ export class AddAppComponent implements OnInit {
       this.selectedLocations = this.allLocations;
     }
 
+    const ghlAppCreds: any = localStorage.getItem("ghl_app_credentials");
+    const apiKey: string = JSON.parse(ghlAppCreds).apiKey;
+
     for (const location of this.selectedLocations) {
       const authCodeReq: OauthAuthorizationModel = {
         client_id: this.app.clientKeys[0].id,
         location_id: location.id,
         response_type: '',
         redirect_url: this.app.redirectUris[0],
-        scope: this.app.allowedScopes.toString().replaceAll(",", "+")
+        scope: this.app.allowedScopes.toString().replaceAll(",", " ")
       };
-      this.ghl.getOAuthAuthorizationCode(authCodeReq).subscribe((result) => {
+      this.ghl.getOAuthAuthorizationCode(apiKey, authCodeReq).subscribe((result) => {
         console.log(result);
+        const redirectUrl = result["redirectUrl"];
+        this.ghl.callRedirectUrl(redirectUrl).subscribe((result) => {
+          console.log("")
+        }, (error) => {
+          console.log(error);
+        });
       }, (error) => {
         console.log(error);
       });
     }
   }
+
 }

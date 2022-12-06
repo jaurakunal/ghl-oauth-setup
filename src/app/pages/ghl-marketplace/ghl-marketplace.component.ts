@@ -180,7 +180,7 @@ export class GhlMarketplaceComponent implements OnInit {
     console.log("credentials" + credentials);
     if (credentials === null) {
       this.loginDialog = this.dialog.open(LoginComponent, {
-        width: '600px',
+        width: '700px',
         height: '500px',
         disableClose: true,
         data: {

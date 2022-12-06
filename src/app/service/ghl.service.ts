@@ -99,19 +99,20 @@ export class GhlService {
     return this.http.get<any>(url, {headers: headers});
   }
 
-  public getOAuthAuthorizationCode(authCodeRequest: OauthAuthorizationModel) {
+  public getOAuthAuthorizationCode(apiKey: string, authCodeRequest: OauthAuthorizationModel) {
     const url: string = this.oAuthBaseUrl + this.authCodeUrl;
     const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Bearer ' + apiKey
     });
     const payload = new HttpParams()
       .set("client_id", authCodeRequest.client_id)
       .set("location_id", authCodeRequest.location_id)
       .set("response_type", "code")
-      .set("redirect_url", authCodeRequest.redirect_url)
+      .set("redirect_uri", authCodeRequest.redirect_url)
       .set("scope", authCodeRequest.scope);
     console.log(payload);
-    return this.http.post<any>(url, payload, {headers: headers});
+    return this.http.post<any>(url, null, {headers: headers, params: payload});
   }
 
   public executeOAuth(oAuthRequest: OauthTokenModel) {
@@ -146,5 +147,9 @@ export class GhlService {
       "channel": "APP"
     });
     return this.http.get<any>(url, {headers: headers});
+  }
+
+  public callRedirectUrl(url: string) {
+    return this.http.get<any>(url);
   }
 }

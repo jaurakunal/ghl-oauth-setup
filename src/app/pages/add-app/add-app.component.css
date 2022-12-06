@@ -52,7 +52,6 @@ ul .material-icons-outlined {
 
 .buttr-form {
   background-color: #F7F9FE;
-  width: 100%;
   text-align: left;
   padding: 20px;
 }
@@ -119,4 +118,10 @@ ul .material-icons-outlined {
 mat-selection-list {
   max-height: 35vw;
   overflow: auto;
+}
+
+.buttr-add-app-buttons {
+  padding-left: 10px;
+  display: flex;
+  justify-content: space-between;
 }
