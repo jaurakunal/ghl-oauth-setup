@@ -25,6 +25,7 @@ import {SearchPipe} from './pages/ghl-marketplace/search.pipe';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AddAppComponent } from './pages/add-app/add-app.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AddAppComponent } from './pages/add-app/add-app.component';
     FormsModule,
     MatIconModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
+    MatPaginatorModule
   ],
   providers: [
     {

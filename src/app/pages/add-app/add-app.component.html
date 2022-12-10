@@ -22,13 +22,22 @@
         </mat-form-field>
       </div>
 
-      <mat-selection-list #locList [(ngModel)]="selectedLocations">
-        <mat-list-option *ngFor="let location of allLocations | search: 'address,name':query"
-                          [value]="location">
-          <h2 matListItemTitle>{{location.name}}</h2>
-          <p matListItemLine>{{location.address}}</p>
-        </mat-list-option>
-      </mat-selection-list>
+      <div>
+        <mat-paginator #paginator
+                       [length]="recordCount"
+                       [showFirstLastButtons]="true"
+                       [pageSize]="pageSize"
+                       (page)="changePage($event)">
+
+        </mat-paginator>
+        <mat-selection-list #locList [(ngModel)]="selectedLocations">
+          <mat-list-option *ngFor="let location of locationsList | search: 'address,name':query"
+                           [value]="location">
+            <h2 matListItemTitle>{{location.name}}</h2>
+            <p matListItemLine>{{location.address}}</p>
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
     </div>
   </section>
 </div>

@@ -2,15 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {GhlService} from '../../service/ghl.service';
 import {ActivatedRoute} from '@angular/router';
 import {LoaderComponent} from '../../components/loader/loader.component';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 import {LocationModel} from '../../models/locations/location.model';
 import {LoginComponent} from '../../components/login/login.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {GhlAppModel} from "../../models/ghl-app/ghl-app.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {MatSelectionListChange} from "@angular/material/list";
-import {MatLegacyListOption} from "@angular/material/legacy-list";
 import {OauthAuthorizationModel} from "../../models/login-flow/oauth-authorization.model";
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-add-app',
@@ -19,16 +18,19 @@ import {OauthAuthorizationModel} from "../../models/login-flow/oauth-authorizati
 })
 export class AddAppComponent implements OnInit {
 
-  allLocations: Array<LocationModel>;
-  selectedLocations: any;
+  locationsList: Array<LocationModel>;
+  selectedLocations: Array<LocationModel>;
   app: GhlAppModel;
   loader: any;
   query: string = '';
+  pageSize: number = 50;
+  recordCount: number = 0;
+  showSelectedLocationsButton: boolean = false;
 
   constructor(private ghl: GhlService, private route: ActivatedRoute, private dialog: MatDialog,
               private snackBar: MatSnackBar) {
-    this.allLocations = new Array<LocationModel>();
-    //this.selectedLocations = new Array<LocationModel>();
+    this.locationsList = new Array<LocationModel>();
+    this.selectedLocations = new Array<LocationModel>();
     this.app = {
       id: '',
       name: '',
@@ -58,7 +60,7 @@ export class AddAppComponent implements OnInit {
     }
 
     this.loadAppDetails(appId);
-    this.loadLocations();
+    this.loadLocations(0);
   }
 
   private loadAppDetails(appId: string) {
@@ -82,7 +84,7 @@ export class AddAppComponent implements OnInit {
     });
   }
 
-  private loadLocations() {
+  private loadLocations(skipCount: number) {
     const ghlAppCreds: any = localStorage.getItem("ghl_app_credentials");
 
     if (ghlAppCreds === null) {
@@ -95,16 +97,20 @@ export class AddAppComponent implements OnInit {
         }
       });
       loginDialog.afterClosed().subscribe(() => {
-        this.loadLocations();
+        this.loadLocations(skipCount);
       })
     } else {
       this.toggleLoaderDisplay(true, "Loading locations!");
       const apiKey: string = JSON.parse(ghlAppCreds).apiKey;
-      this.ghl.getLocations(apiKey).subscribe((result) => {
+      this.ghl.getLocations(apiKey, this.pageSize, skipCount).subscribe((result) => {
+        this.locationsList = new Array<LocationModel>();
         this.toggleLoaderDisplay(false, "");
         console.log(result);
+        this.recordCount = result["hit"][0]["count"];
+        console.log("Total locations = " + this.recordCount);
+
         for(const location of result["locations"]) {
-          this.allLocations.push(this.getLocationFrom(location));
+          this.locationsList.push(this.getLocationFrom(location));
         }
       }, (error: HttpErrorResponse) => {
         this.toggleLoaderDisplay(false, "");
@@ -162,7 +168,11 @@ export class AddAppComponent implements OnInit {
     console.log(this.selectedLocations);
 
     if (addToAll) {
-      this.selectedLocations = this.allLocations;
+      this.selectedLocations = this.locationsList;
+    }
+
+    if (this.selectedLocations.length <= 0) {
+      return;
     }
 
     const ghlAppCreds: any = localStorage.getItem("ghl_app_credentials");
@@ -190,4 +200,8 @@ export class AddAppComponent implements OnInit {
     }
   }
 
+  changePage(event: PageEvent) {
+    const skipRecords = event.pageIndex * this.pageSize;
+    this.loadLocations(skipRecords);
+  }
 }

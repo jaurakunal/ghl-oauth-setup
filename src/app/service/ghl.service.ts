@@ -22,7 +22,7 @@ export class GhlService {
     this.ghlAppLoginUrl = "https://services.leadconnectorhq.com/oauth/2/login/email";
     this.marketplaceAppsBaseUrl = " https://services.msgsndr.com/integrations/public";
     this.allAppsUrl = "/all";
-    this.locationsUrl = "/locations?limit=100"
+    this.locationsUrl = "/locations"
     this.oAuthBaseUrl = "https://services.msgsndr.com/oauth";
     this.authCodeUrl = "/authorize";
     this.authTokenUrl = "/token";
@@ -90,13 +90,16 @@ export class GhlService {
     return this.http.get<any>(url);
   }
 
-  public getLocations(apiKey: string) {
+  public getLocations(apiKey: string, pageSize: number, skipCount: number) {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + apiKey,
       'Content-Type': 'application/json'
     });
+    const queryParams = new HttpParams()
+      .set("limit", pageSize)
+      .set("skip", skipCount);
     const url: string = this.marketplaceAppsBaseUrl + this.locationsUrl;
-    return this.http.get<any>(url, {headers: headers});
+    return this.http.get<any>(url, {headers: headers, params: queryParams});
   }
 
   public getOAuthAuthorizationCode(apiKey: string, authCodeRequest: OauthAuthorizationModel) {
