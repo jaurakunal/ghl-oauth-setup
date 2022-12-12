@@ -70,7 +70,7 @@ export class AddAppComponent implements OnInit {
     this.showRedirectUri = false;
     console.log("Getting info for " + appId);
     const ghlMarketplaceCreds: any = localStorage.getItem("ghl_marketplace_credentials");
-    const token: string = JSON.parse(ghlMarketplaceCreds).jwt;
+    const token: string = ghlMarketplaceCreds === null ? '' : JSON.parse(ghlMarketplaceCreds).jwt;
     this.ghl.getMyAppDetail(token, appId).subscribe((result) => {
       console.log(result);
       this.app = this.getGhlAppFrom(result["app"]);
@@ -246,9 +246,7 @@ export class AddAppComponent implements OnInit {
     if (index === 0) {
       console.log(this.authCodeStatus.toString().replaceAll(",", "\n"));
       this.toggleLoaderDisplay(false, '');
-      this.snackBar.open("Please the console log for auth codes for each location",  "Ok!", {
-        duration: 5000
-      });
+      this.snackBar.open("Please see the console log for auth codes for each location",  "Ok!");
     }
   }
   addAppToSelectedLocations(apiKey: string) {

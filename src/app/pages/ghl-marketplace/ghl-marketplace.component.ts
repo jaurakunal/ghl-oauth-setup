@@ -54,7 +54,7 @@ export class GhlMarketplaceComponent implements OnInit {
   ngOnInit(): void {
     this.showSplitView = false;
     this.showDashboardView = true;
-    this.loadMyApps();
+    this.loadAllMarketplaceApps();
   }
 
   loadAllMarketplaceApps() {
@@ -182,13 +182,15 @@ export class GhlMarketplaceComponent implements OnInit {
       this.loginDialog = this.dialog.open(LoginComponent, {
         width: '700px',
         height: '500px',
-        disableClose: true,
+        disableClose: false,
         data: {
           type: "GHLApp"
         }
       });
-      this.loginDialog.afterClosed().subscribe(() => {
-        this.navigateToAddApp(app.id);
+      this.loginDialog.afterClosed().subscribe((result: string) => {
+        if (result === "Success") {
+          this.navigateToAddApp(app.id);
+        }
       })
     } else {
         this.navigateToAddApp(app.id);

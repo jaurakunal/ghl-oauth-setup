@@ -1,7 +1,7 @@
-<div>
+<div class="buttr-login-page">
   <mat-toolbar class="buttr-header">
     <a href="https://m.me/asskaban" target="_blank">
-      <img src="assets/buttr_logo.png" class="buttr-logo">
+      <img src="assets/favicon.png" class="buttr-logo">
     </a>
     <h2 style="padding-left: 15px;">The ButtrTools' GHL Marketplace Helper</h2>
   </mat-toolbar>
@@ -10,6 +10,10 @@
 
     <!-- Login with email+password-->
     <div class="buttr-form" *ngIf="showLoginSection">
+
+      <div class="buttr-form-field">
+        <h2>{{loginMessage}}</h2>
+      </div>
       <form [formGroup]="loginFormGroup">
 
         <div class="buttr-form-field">

@@ -1,7 +1,7 @@
 <div>
   <mat-toolbar class="buttr-header">
     <a href="https://m.me/asskaban" target="_blank">
-      <img src="assets/buttr_logo.png" class="buttr-logo">
+      <img src="assets/favicon.png" class="buttr-logo">
     </a>
     <h2 style="padding-left: 15px;">The ButtrTools' GHL Marketplace Helper</h2>
   </mat-toolbar>
@@ -24,7 +24,7 @@
       </div>
       <div class="buttr-app-detail-data">
         <h2>Website</h2>
-        <mat-label>{{app.website}}</mat-label>
+        <a href="{{app.website}}" target="_blank">{{app.website}}</a>
       </div>
       <div class="buttr-app-detail-data" *ngIf="showRedirectUri">
         <mat-form-field class="buttr-app-list-card-search" appearance="outline">

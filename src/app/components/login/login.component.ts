@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   showOtpInput: boolean = false;
   loader: any;
   loginReq: LoginRequestModel;
+  loginMessage: string;
 
   @Output()
   loginCompleted = new EventEmitter<any>();
@@ -51,6 +52,12 @@ export class LoginComponent implements OnInit {
       token: '',
       version: 2
     };
+
+    if (loginType.type === 'GHLApp') {
+      this.loginMessage = "Please use the your GHL app credentials.";
+    } else {
+      this.loginMessage = "Please use your GHL Marketplace credentials.";
+    }
   }
 
   ngOnInit(): void {
@@ -69,11 +76,13 @@ export class LoginComponent implements OnInit {
     this.loginReq.password = this.loginFormGroup.value.password;
 
     if (this.loginType.type === 'GHLApp') {
+      this.loginMessage = "Please use the your GHL app credentials."
       this.callGhlAppLoginFlow();
     } else {
       this.callGhlMarketplaceLoginFlow();
     }
   }
+
 
   private callGhlAppLoginFlow() {
     this.toggleLoaderDisplay(true, "Logging into GHL App!")
@@ -148,7 +157,7 @@ export class LoginComponent implements OnInit {
       this.toggleLoaderDisplay(false, "");
       console.log(result);
       this.saveAccessCredentials(result);
-      this.loginCompleted.emit(result);
+      this.loginCompleted.emit("Success");
 
       if (this.loginType.type === "GHLApp") {
         this.dialogRef.close()
