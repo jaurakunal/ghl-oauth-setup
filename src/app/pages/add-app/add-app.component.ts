@@ -10,6 +10,7 @@ import {GhlAppModel} from "../../models/ghl-app/ghl-app.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {OauthAuthorizationModel} from "../../models/login-flow/oauth-authorization.model";
 import {PageEvent} from '@angular/material/paginator';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-add-app',
@@ -23,9 +24,9 @@ export class AddAppComponent implements OnInit {
   app: GhlAppModel;
   loader: any;
   query: string = '';
-  pageSize: number = 50;
+  pageSize: number = 5;
   recordCount: number = 0;
-  showSelectedLocationsButton: boolean = false;
+  authCodeStatus: Array<string> = new Array<string>();
 
   constructor(private ghl: GhlService, private route: ActivatedRoute, private dialog: MatDialog,
               private snackBar: MatSnackBar) {
@@ -115,9 +116,6 @@ export class AddAppComponent implements OnInit {
       }, (error: HttpErrorResponse) => {
         this.toggleLoaderDisplay(false, "");
         console.log(error)
-        if (error.status === 401) {
-
-        }
       });
     }
   }
@@ -164,21 +162,51 @@ export class AddAppComponent implements OnInit {
   }
 
   initAddApp(addToAll: boolean) {
-    console.log("Adding app " + this.app.name + " for these locations: ");
-    console.log(this.selectedLocations);
-
-    if (addToAll) {
-      this.selectedLocations = this.locationsList;
-    }
-
-    if (this.selectedLocations.length <= 0) {
+    if (!addToAll && this.selectedLocations.length <= 0) {
       return;
     }
 
     const ghlAppCreds: any = localStorage.getItem("ghl_app_credentials");
     const apiKey: string = JSON.parse(ghlAppCreds).apiKey;
 
-    for (const location of this.selectedLocations) {
+    if (addToAll) {
+      this.getAllLocations(apiKey);
+      return;
+    }
+
+    this.addAppToSelectedLocations(apiKey);
+  }
+
+  getAllLocations(apiKey: string) {
+    this.toggleLoaderDisplay(true, "Getting auth code");
+    const apiCalls = new Array<any>();
+    let index: number = 0;
+    const allLocations: Array<LocationModel> = new Array<LocationModel>();
+
+    for(let i = 0; i < this.recordCount; i += this.pageSize) {
+      console.log("Calling getLocation with skipCount = " + i);
+      apiCalls[index++] = this.ghl.getLocations(apiKey, this.pageSize, i);
+    }
+
+    forkJoin(apiCalls).subscribe(( result: any) => {
+      console.log(result);
+
+      for (let i = 0; i < apiCalls.length; i++) {
+        for (const location of result[i]["locations"]) {
+          allLocations.push(this.getLocationFrom(location));
+        }
+      }
+
+      this.getAuthCodeForLocations(apiKey, allLocations)
+    });
+  }
+
+  getAuthCodeForLocations(apiKey: string, allLocations: Array<LocationModel>) {
+    this.authCodeStatus = new Array<string>();
+    console.log("authorizing codes for " + allLocations.length + " locations.");
+    let index = 0;
+
+    for (const location of allLocations) {
       const authCodeReq: OauthAuthorizationModel = {
         client_id: this.app.clientKeys[0].id,
         location_id: location.id,
@@ -186,22 +214,47 @@ export class AddAppComponent implements OnInit {
         redirect_url: this.app.redirectUris[0],
         scope: this.app.allowedScopes.toString().replaceAll(",", " ")
       };
+      index++;
       this.ghl.getOAuthAuthorizationCode(apiKey, authCodeReq).subscribe((result) => {
-        console.log(result);
         const redirectUrl = result["redirectUrl"];
+        const status: string = "AuthCode for location '" + location.name + "' - " + redirectUrl.split("=")[1]
+        this.authCodeStatus.push(status);
         this.ghl.callRedirectUrl(redirectUrl).subscribe((result) => {
-          console.log("")
-        }, (error) => {
-          console.log(error);
+          index--;
+          this.shouldToggleLoader(index);
+        }, (error: HttpErrorResponse) => {
+          console.log("Error calling redirectUri - " + error.url);
+          index--;
+          this.shouldToggleLoader(index);
         });
       }, (error) => {
-        console.log(error);
+        console.log("Error getting auth code for " + location.name);
+        index--;
+        this.shouldToggleLoader(index);
+      });
+
+    }
+  }
+
+  shouldToggleLoader(index: number) {
+    if (index === 0) {
+      console.log(this.authCodeStatus.toString().replaceAll(",", "\n"));
+      this.toggleLoaderDisplay(false, '');
+      this.snackBar.open("Please the console log for auth codes for each location",  "Ok!", {
+        duration: 5000
       });
     }
+  }
+  addAppToSelectedLocations(apiKey: string) {
+    this.toggleLoaderDisplay(true, "Getting auth code");
+    console.log("Adding app " + this.app.name + " for these locations: ");
+    console.log(this.selectedLocations);
+    this.getAuthCodeForLocations(apiKey, this.selectedLocations)
   }
 
   changePage(event: PageEvent) {
     const skipRecords = event.pageIndex * this.pageSize;
     this.loadLocations(skipRecords);
   }
+
 }
