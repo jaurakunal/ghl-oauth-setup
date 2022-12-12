@@ -24,9 +24,11 @@ export class AddAppComponent implements OnInit {
   app: GhlAppModel;
   loader: any;
   query: string = '';
-  pageSize: number = 5;
+  pageSize: number = 100;
   recordCount: number = 0;
   authCodeStatus: Array<string> = new Array<string>();
+  showRedirectUri: boolean = false;
+  redirectUri: string = '';
 
   constructor(private ghl: GhlService, private route: ActivatedRoute, private dialog: MatDialog,
               private snackBar: MatSnackBar) {
@@ -65,6 +67,7 @@ export class AddAppComponent implements OnInit {
   }
 
   private loadAppDetails(appId: string) {
+    this.showRedirectUri = false;
     console.log("Getting info for " + appId);
     const ghlMarketplaceCreds: any = localStorage.getItem("ghl_marketplace_credentials");
     const token: string = JSON.parse(ghlMarketplaceCreds).jwt;
@@ -75,7 +78,8 @@ export class AddAppComponent implements OnInit {
       console.log(error);
       this.ghl.getAppDetailsFor(appId).subscribe((result) => {
         console.log(result);
-        this.app = this.getGhlAppFrom(result["app"]);
+        this.app = this.getGhlAppFrom(result["integration"]);
+        this.showRedirectUri = true;
       }, (error) => {
         console.log(error);
         this.snackBar.open("We ran into an issue getting app info. Please try again!",  "Ok!", {
@@ -211,7 +215,7 @@ export class AddAppComponent implements OnInit {
         client_id: this.app.clientKeys[0].id,
         location_id: location.id,
         response_type: '',
-        redirect_url: this.app.redirectUris[0],
+        redirect_url: this.showRedirectUri ? this.redirectUri : this.app.redirectUris[0],
         scope: this.app.allowedScopes.toString().replaceAll(",", " ")
       };
       index++;
@@ -224,11 +228,13 @@ export class AddAppComponent implements OnInit {
           this.shouldToggleLoader(index);
         }, (error: HttpErrorResponse) => {
           console.log("Error calling redirectUri - " + error.url);
+          console.error(error.error);
           index--;
           this.shouldToggleLoader(index);
         });
       }, (error) => {
         console.log("Error getting auth code for " + location.name);
+        console.error(error.error);
         index--;
         this.shouldToggleLoader(index);
       });

@@ -125,3 +125,18 @@ mat-selection-list {
   display: flex;
   justify-content: space-between;
 }
+
+.buttr-app-detail {
+  padding-left: 10px;
+  display: flex;
+  position: relative;
+  flex: auto;
+}
+
+.buttr-app-detail-data {
+  width: 50%;
+}
+
+.buttr-locations-list {
+  height: 100%;
+}

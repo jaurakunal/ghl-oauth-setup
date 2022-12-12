@@ -13,7 +13,27 @@
       <button mat-raised-button color="primary" (click)="initAddApp(false)">Selected Locations</button>
       <button mat-raised-button color="primary" (click)="initAddApp(true)">All Locations</button>
     </div>
-    <div>
+    <div class="buttr-app-detail">
+      <div class="buttr-app-detail-data">
+        <h2>Name</h2>
+        <mat-label>{{app.name}} by {{app.companyName}}</mat-label>
+      </div>
+      <div class="buttr-app-detail-data">
+        <h2>Description</h2>
+        <mat-label>{{app.tagline}}</mat-label>
+      </div>
+      <div class="buttr-app-detail-data">
+        <h2>Website</h2>
+        <mat-label>{{app.website}}</mat-label>
+      </div>
+      <div class="buttr-app-detail-data" *ngIf="showRedirectUri">
+        <mat-form-field class="buttr-app-list-card-search" appearance="outline">
+          <mat-label>Redirect URI</mat-label>
+          <input matInput type="text" [(ngModel)]="redirectUri" placeholder="Reach out to the App developer for this">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="buttr-locations-list">
       <div class="buttr-search-bar">
         <mat-form-field class="buttr-app-list-card-search" appearance="outline">
           <mat-label>Search for Apps</mat-label>
