@@ -109,5 +109,8 @@
       }
     }
   },
-  "defaultProject": "ghl-oauth-setup"
+  "defaultProject": "ghl-oauth-setup",
+  "cli": {
+    "analytics": false
+  }
 }

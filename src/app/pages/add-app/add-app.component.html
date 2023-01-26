@@ -1,18 +1,11 @@
 <div>
   <mat-toolbar class="buttr-header">
-    <a href="https://m.me/asskaban" target="_blank">
-      <img src="assets/favicon.png" class="buttr-logo">
-    </a>
-    <h2 style="padding-left: 15px;">The ButtrTools' GHL Marketplace Helper</h2>
+    <h2 style="padding-left: 15px;">Vintory GHL Marketplace Helper</h2>
   </mat-toolbar>
 
   <section class="buttr-section">
 
-    <div class="buttr-add-app-buttons">
 
-      <button mat-raised-button color="primary" (click)="initAddApp(false)">Selected Locations</button>
-      <button mat-raised-button color="primary" (click)="initAddApp(true)">All Locations</button>
-    </div>
     <div class="buttr-app-detail">
       <div class="buttr-app-detail-data">
         <h2>Name</h2>
@@ -32,6 +25,10 @@
           <input matInput type="text" [(ngModel)]="redirectUri" placeholder="Reach out to the App developer for this">
         </mat-form-field>
       </div>
+    </div>
+    <div class="buttr-add-app-buttons">
+      <button mat-raised-button color="primary" (click)="initAddApp(false)">Selected Locations</button>
+      <button mat-raised-button color="primary" (click)="initAddApp(true)">All Locations</button>
     </div>
     <div class="buttr-locations-list">
       <div class="buttr-search-bar">

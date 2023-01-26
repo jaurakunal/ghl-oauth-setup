@@ -24,7 +24,7 @@ export class AddAppComponent implements OnInit {
   app: GhlAppModel;
   loader: any;
   query: string = '';
-  pageSize: number = 100;
+  pageSize: number = 1000;
   recordCount: number = 0;
   authCodeStatus: Array<string> = new Array<string>();
   showRedirectUri: boolean = false;
@@ -221,7 +221,9 @@ export class AddAppComponent implements OnInit {
       index++;
       this.ghl.getOAuthAuthorizationCode(apiKey, authCodeReq).subscribe((result) => {
         const redirectUrl = result["redirectUrl"];
-        const status: string = "AuthCode for location '" + location.name + "' - " + redirectUrl.split("=")[1]
+        console.log(redirectUrl);
+        const status: string = "AuthCode for location '" + location.name + "' - " + redirectUrl.split("=")[1];
+
         this.authCodeStatus.push(status);
         this.ghl.callRedirectUrl(redirectUrl).subscribe((result) => {
           index--;

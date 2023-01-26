@@ -16,7 +16,7 @@ export class GhlMarketplaceComponent implements OnInit {
 
   ghlApps: Array<GhlAppModel>;
   loader: any;
-  query: string = '';
+  query: string = 'Enkode';
   showDashboardView: boolean;
   showSplitView: boolean;
   selectedApp: GhlAppModel;
