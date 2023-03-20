@@ -4,4 +4,5 @@ export interface OauthAuthorizationModel {
   response_type: string;
   redirect_url: string;
   scope: string;
+  userType: string;
 }
