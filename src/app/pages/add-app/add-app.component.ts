@@ -216,7 +216,8 @@ export class AddAppComponent implements OnInit {
         location_id: location.id,
         response_type: '',
         redirect_url: this.showRedirectUri ? this.redirectUri : this.app.redirectUris[0],
-        scope: this.app.allowedScopes.toString().replaceAll(",", " ")
+        scope: this.app.allowedScopes.toString().replaceAll(",", " "),
+        userType: 'Location'
       };
       index++;
       this.ghl.getOAuthAuthorizationCode(apiKey, authCodeReq).subscribe((result) => {

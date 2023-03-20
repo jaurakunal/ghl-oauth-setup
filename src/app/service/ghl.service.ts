@@ -113,7 +113,8 @@ export class GhlService {
       .set("location_id", authCodeRequest.location_id)
       .set("response_type", "code")
       .set("redirect_uri", authCodeRequest.redirect_url)
-      .set("scope", authCodeRequest.scope);
+      .set("scope", authCodeRequest.scope)
+      .set("userType", authCodeRequest.userType);
     console.log(payload);
     return this.http.post<any>(url, null, {headers: headers, params: payload});
   }
