@@ -114,7 +114,8 @@ export class GhlService {
       .set("response_type", "code")
       .set("redirect_uri", authCodeRequest.redirect_url)
       .set("scope", authCodeRequest.scope)
-      .set("userType", authCodeRequest.userType);
+      .set("userType", authCodeRequest.userType)
+      .set("conversationProviders", authCodeRequest.conversationProviders);
     console.log(payload);
     return this.http.post<any>(url, null, {headers: headers, params: payload});
   }

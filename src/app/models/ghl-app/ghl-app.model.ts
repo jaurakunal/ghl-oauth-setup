@@ -7,6 +7,7 @@ export interface GhlAppModel {
   tagline: string;
   website: string;
   clientKeys: Array<ClientKeys>;
+  conversationProviders: Array<ConversationProvider>;
   allowedScopes: Array<string>;
   redirectUris: Array<string>;
   webhookUrl: string;
@@ -16,4 +17,10 @@ interface ClientKeys {
   id: string;
   name: string;
   createdAt: string;
+}
+
+interface ConversationProvider {
+  _id: string;
+  name: string;
+  type: string;
 }

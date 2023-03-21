@@ -5,4 +5,5 @@ export interface OauthAuthorizationModel {
   redirect_url: string;
   scope: string;
   userType: string;
+  conversationProviders: string;
 }

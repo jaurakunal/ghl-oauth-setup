@@ -24,7 +24,7 @@ export class AddAppComponent implements OnInit {
   app: GhlAppModel;
   loader: any;
   query: string = '';
-  pageSize: number = 100;
+  pageSize: number = 1000;
   recordCount: number = 0;
   authCodeStatus: Array<string> = new Array<string>();
   showRedirectUri: boolean = false;
@@ -47,6 +47,13 @@ export class AddAppComponent implements OnInit {
           id: '',
           name: '',
           createdAt: ''
+        }
+      ],
+      conversationProviders: [
+        {
+          _id: '',
+          name: '',
+          type: ''
         }
       ],
       allowedScopes: [],
@@ -77,8 +84,10 @@ export class AddAppComponent implements OnInit {
     },(error:HttpErrorResponse) => {
       console.log(error);
       this.ghl.getAppDetailsFor(appId).subscribe((result) => {
-        console.log(result);
+        console.log('getAppDetailsFor app: ' + JSON.stringify(result));
         this.app = this.getGhlAppFrom(result["integration"]);
+        if (result["conversationProviders"] != undefined)
+          this.app.conversationProviders = result["conversationProviders"];
         this.showRedirectUri = true;
       }, (error) => {
         console.log(error);
@@ -159,6 +168,7 @@ export class AddAppComponent implements OnInit {
       tagline: app.tagline !== undefined ? app.tagline : '',
       website: app.website !== undefined ? app.website : '',
       clientKeys: app.clientKeys !== undefined ? app.clientKeys : [{id: '', name: '', createdAt: ''}],
+      conversationProviders: app.conversationProviders !== undefined ? app.conversationProviders : [{_id: '', name: '', type: ''}],
       allowedScopes: app.allowedScopes !== undefined ? app.allowedScopes : [],
       redirectUris: app.redirectUris !== undefined ? app.redirectUris : [],
       webhookUrl: app.webhookUrl !== undefined ? app.webhookUrl : ''
@@ -215,14 +225,17 @@ export class AddAppComponent implements OnInit {
         client_id: this.app.clientKeys[0].id,
         location_id: location.id,
         response_type: '',
+        userType: 'Location',
+        conversationProviders: this.app.conversationProviders.map(c => c._id).toString(),
         redirect_url: this.showRedirectUri ? this.redirectUri : this.app.redirectUris[0],
-        scope: this.app.allowedScopes.toString().replaceAll(",", " "),
-        userType: 'Location'
+        scope: this.app.allowedScopes.toString().replaceAll(",", " ")
       };
       index++;
       this.ghl.getOAuthAuthorizationCode(apiKey, authCodeReq).subscribe((result) => {
         const redirectUrl = result["redirectUrl"];
-        const status: string = "AuthCode for location '" + location.name + "' - " + redirectUrl.split("=")[1]
+        console.log(redirectUrl);
+        const status: string = "AuthCode for location '" + location.name + "' - " + redirectUrl.split("=")[1];
+
         this.authCodeStatus.push(status);
         this.ghl.callRedirectUrl(redirectUrl).subscribe((result) => {
           index--;
