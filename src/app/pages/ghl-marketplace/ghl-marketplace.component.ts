@@ -44,6 +44,13 @@ export class GhlMarketplaceComponent implements OnInit {
           createdAt: ''
         }
       ],
+      conversationProviders: [
+        {
+          _id: '',
+          name: '',
+          type: ''
+        }
+      ],
       allowedScopes: [],
       redirectUris: [],
       webhookUrl: ''
@@ -115,6 +122,7 @@ export class GhlMarketplaceComponent implements OnInit {
       tagline: app.tagline !== undefined ? app.tagline : '',
       website: app.website !== undefined ? app.website : '',
       clientKeys: app.clientKeys !== undefined ? app.clientKeys : [{id: '', name: '', createdAt: ''}],
+      conversationProviders: app.conversationProviders != undefined ? app.conversationProviders : [{_id: '', name: '', type: ''}],
       allowedScopes: app.allowedScopes !== undefined ? app.allowedScopes : [],
       redirectUris: app.redirectUris !== undefined ? app.redirectUris : [],
       webhookUrl: app.webhookUrl !== undefined ? app.webhookUrl : ''
@@ -133,6 +141,7 @@ export class GhlMarketplaceComponent implements OnInit {
         this.toggleLoaderDisplay(false, '');
         console.log(result);
         this.selectedApp = this.getGhlAppFrom(result["integration"]);
+        this.selectedApp.conversationProviders = result["conversationProviders"];
         this.showSplitView = true;
         this.showDashboardView = false;
       }, (error) => {

@@ -123,7 +123,7 @@ mat-selection-list {
 .buttr-add-app-buttons {
   padding-left: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .buttr-app-detail {

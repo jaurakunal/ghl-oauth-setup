@@ -28,6 +28,13 @@ export class GhlAppDetailComponent implements OnChanges {
           createdAt: ''
         }
       ],
+      conversationProviders: [
+        {
+          _id: '',
+          name: '',
+          type: ''
+        }
+      ],
       allowedScopes: [],
       redirectUris: [],
       webhookUrl: ''
@@ -50,6 +57,13 @@ export class GhlAppDetailComponent implements OnChanges {
             id: '',
             name: '',
             createdAt: ''
+          }
+        ],
+        conversationProviders: [
+          {
+            _id: '',
+            name: '',
+            type: ''
           }
         ],
         allowedScopes: [],

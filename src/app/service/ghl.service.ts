@@ -110,10 +110,12 @@ export class GhlService {
     });
     const payload = new HttpParams()
       .set("client_id", authCodeRequest.client_id)
+      .set("userType", authCodeRequest.userType)
       .set("location_id", authCodeRequest.location_id)
       .set("response_type", "code")
       .set("redirect_uri", authCodeRequest.redirect_url)
-      .set("scope", authCodeRequest.scope);
+      .set("scope", authCodeRequest.scope)
+      .set("conversationProviders", authCodeRequest.conversationProviders);
     console.log(payload);
     return this.http.post<any>(url, null, {headers: headers, params: payload});
   }
