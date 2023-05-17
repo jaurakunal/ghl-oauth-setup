@@ -1,7 +1,6 @@
 @import "../../../../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 .buttr-header {
-  background: #fffaf0;
   position: sticky;
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
@@ -14,7 +13,6 @@
 
 .buttr-section {
   padding: 10px;
-  background-color: #F7F9FE;
 }
 
 .buttr-full-width-input {
