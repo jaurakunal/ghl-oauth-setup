@@ -155,7 +155,7 @@ export class GhlMarketplaceComponent implements OnInit {
     } else {
       this.ghl.getMyAppDetail(this.marketplaceToken, id).subscribe((result) => {
         this.toggleLoaderDisplay(false, '');
-        console.log(result);
+        console.log('getMyAppDetail: ' + result);
         this.selectedApp = this.getGhlAppFrom(result["app"]);
         this.showSplitView = true;
         this.showDashboardView = false;

@@ -20,8 +20,8 @@ export class GhlService {
 
   constructor(private http: HttpClient) {
     this.ghlAppLoginUrl = "https://services.leadconnectorhq.com/oauth/2/login/email";
-    this.marketplaceAppsBaseUrl = " https://services.msgsndr.com/integrations/public";
-    this.allAppsUrl = "/all";
+    this.marketplaceAppsBaseUrl = " https://services.leadconnectorhq.com/integrations/public";
+    this.allAppsUrl = "/all?limit=1000";
     this.locationsUrl = "/locations"
     this.oAuthBaseUrl = "https://services.msgsndr.com/oauth";
     this.authCodeUrl = "/authorize";
