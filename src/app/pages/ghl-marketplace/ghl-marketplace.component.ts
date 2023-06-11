@@ -140,7 +140,7 @@ export class GhlMarketplaceComponent implements OnInit {
       this.ghl.getAppDetailsFor(id).subscribe((result) => {
         this.toggleLoaderDisplay(false, '');
         console.log('marketplace app: ' + JSON.stringify(result));
-        this.selectedApp = this.getGhlAppFrom(result["integration"]);
+        this.selectedApp = this.getGhlAppFrom(result["integrations"]);
         if (result["conversationProviders"] != undefined)
           this.selectedApp.conversationProviders = result["conversationProviders"];
         this.showSplitView = true;
