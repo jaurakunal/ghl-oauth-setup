@@ -85,7 +85,7 @@ export class AddAppComponent implements OnInit {
       console.log(error);
       this.ghl.getAppDetailsFor(appId).subscribe((result) => {
         console.log('getAppDetailsFor app: ' + JSON.stringify(result));
-        this.app = this.getGhlAppFrom(result["integration"]);
+        this.app = this.getGhlAppFrom(result["integrations"]);
         if (result["conversationProviders"] != undefined)
           this.app.conversationProviders = result["conversationProviders"];
         this.showRedirectUri = true;
